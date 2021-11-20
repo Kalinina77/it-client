@@ -1,0 +1,13 @@
+.Persons {
+  > table {
+    box-sizing: border-box;
+    width: 100%;
+  }
+  &-Row {
+    // display: flex;
+    margin-bottom: 8px;
+    > td {
+      padding: 4px 8px;
+    }
+  }
+}

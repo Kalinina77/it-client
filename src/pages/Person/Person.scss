@@ -1,0 +1,24 @@
+.Person {
+  // display: flex;
+  // flex-direction: column;
+
+  &-InfoRow {
+    width: 100%;
+    font-size: 30px;
+    margin-top: 20px;
+    display: flex;
+    > div:first-child {
+      width: 30%;
+    }
+
+    > div:nth-child(2) {
+      flex-grow: 1;
+    }
+
+  }
+
+  &-Header{
+    display: flex;
+    justify-content: center;
+  }
+}

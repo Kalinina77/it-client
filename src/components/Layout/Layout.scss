@@ -1,0 +1,32 @@
+.Layout {
+  display: flex;
+
+  &-SidePanel {
+    width: 200px;
+    background-color: #f2dff7;
+  }
+
+  &-Logo {
+    margin-bottom: 40px;
+    font-size: 30px;
+  }
+
+  &-Menu {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    > a {
+      padding: 8px;
+      font-size: 30px;
+    }
+    > div {
+      padding: 8px 0;
+    }
+  }
+
+  &-Content {
+    padding: 16px;
+    flex-grow: 1;
+   
+  }
+}

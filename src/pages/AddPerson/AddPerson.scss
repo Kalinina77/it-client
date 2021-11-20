@@ -1,0 +1,25 @@
+.AddPerson {
+  &-BtInp {
+    width: 150px;
+
+  }
+  &-InputsField {
+    margin-top: 16px;
+  }
+  &-Content {
+    display: flex;
+    flex-direction: row;
+    gap: 5%;
+    justify-content: center;
+  }
+
+  &-ContentColumn {
+    width: 40%;
+  }
+  &-Footer{
+    display: flex;
+    justify-content: flex-end;
+    margin-top:16px ;
+    margin-right: 8%;
+  }
+}
