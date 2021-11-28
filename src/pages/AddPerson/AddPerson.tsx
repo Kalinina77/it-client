@@ -1,9 +1,21 @@
-import React from "react";
-import { Button, TextField } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { useFormik } from "formik";
-import { Formik, Field, Form } from 'formik';
 import * as yup from "yup";
+import { useParams } from "react-router-dom";
 import "./AddPerson.scss";
+import {
+  getEmployeeById,
+  postEmployee,
+  putEmployee,
+} from "api/employees/persons";
 
 const validationSchema = yup.object({
   login: yup.string().required("login is required"),
@@ -24,25 +36,67 @@ const validationSchema = yup.object({
     .required("number is required"),
 });
 
+const initialValues = {
+  name: "",
+  surname: "",
+  middleName: "",
+  login: "",
+  phone: "",
+  seria: "",
+  number: "",
+  education: "",
+  post: "",
+};
+
 const AddPersonPage = () => {
+  let { id } = useParams<{ id: string }>();
+  let initialState = { ...initialValues };
+
+  // const [person, setPerson] = useState<IEmployeeGet | null>(null);
+
+  const isEdit = id !== "new";
+
+  useEffect(() => {
+    if (!isEdit || id === "") {
+      return;
+    }
+    const fetchPersonRequest = async () => {
+      try {
+        const data = await getEmployeeById(id);
+        // setPerson(data);
+        initialState = {
+          name: data.name,
+          surname: data.surname,
+          middleName: data.middleName,
+          login: data.login,
+          phone: data.phone,
+          seria: data.seriaPassport,
+          number: data.numberPassport,
+          education: "",
+          post: "",
+        };
+      } catch {
+        console.error("fetchPersonsRequest");
+      }
+    };
+    void fetchPersonRequest();
+  }, [id]);
+
   const formik = useFormik({
-    initialValues: {
-      name: "",
-      surname: "",
-      middleName: "",
-      login: "ivanov",
-      phone: "89655473326",
-      seria: 5678,
-      number: 658743,
-    },
+    initialValues: initialState,
     validationSchema: validationSchema,
     onSubmit: (values) => {
+      if (isEdit) {
+        putEmployee(id, values);
+      } else {
+        postEmployee(values);
+      }
       alert(JSON.stringify(values, null, 2));
     },
   });
 
   return (
-    <div >
+    <div>
       <form onSubmit={formik.handleSubmit}>
         <div className="AddPerson-Content">
           <div className="AddPerson-ContentColumn">
@@ -137,32 +191,58 @@ const AddPersonPage = () => {
                 helperText={formik.touched.number && formik.errors.number}
               />
             </div>
-            <div>
-            <Field name="obrazovanie" component="select">
-                <option value="red">Высшее</option>
-                <option value="green">СПО</option>
-               <option value="blue">Среднее</option>
-            </Field>
+            <div className="AddPerson-InputsField">
+              <FormControl fullWidth>
+                <InputLabel id="education-label-id">Образование</InputLabel>
+                <Select
+                  fullWidth
+                  id="education"
+                  labelId="education-label-id"
+                  name="education"
+                  value={formik.values.education}
+                  label="Образование"
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.education && Boolean(formik.errors.education)
+                  }
+                >
+                  <MenuItem value={"10"}>Ten</MenuItem>
+                  <MenuItem value={"20"}>Twenty</MenuItem>
+                  <MenuItem value={"30"}>Thirty</MenuItem>
+                </Select>
+              </FormControl>
             </div>
-            <div>
-            <Field name="post" component="select">
-                <option value="red">Бухгалтер</option>
-                <option value="green">Программист</option>
-               <option value="blue">Уборщик</option>
-            </Field>
+            <div className="AddPerson-InputsField">
+              <FormControl fullWidth>
+                <InputLabel id="post-label-id">Должность</InputLabel>
+                <Select
+                  fullWidth
+                  id="post"
+                  labelId="post-label-id"
+                  name="post"
+                  value={formik.values.post}
+                  label="Должность"
+                  onChange={formik.handleChange}
+                  error={formik.touched.post && Boolean(formik.errors.post)}
+                >
+                  <MenuItem value={"10"}>Ten</MenuItem>
+                  <MenuItem value={"20"}>Twenty</MenuItem>
+                  <MenuItem value={"30"}>Thirty</MenuItem>
+                </Select>
+              </FormControl>
             </div>
           </div>
         </div>
-        <div className="AddPerson-Footer"> 
-        <Button
-          className="AddPerson-BtInp"
-          color="primary"
-          variant="contained"
-          fullWidth
-          type="submit"
-        >
-          Добавить
-        </Button>
+        <div className="AddPerson-Footer">
+          <Button
+            className="AddPerson-BtInp"
+            color="primary"
+            variant="contained"
+            fullWidth
+            type="submit"
+          >
+            Добавить
+          </Button>
         </div>
       </form>
     </div>

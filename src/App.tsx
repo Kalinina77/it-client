@@ -20,7 +20,7 @@ function App() {
             <Route path="/persons/view/:id">
               <Person />
             </Route>
-            <Route path="/persons/new">
+            <Route path="/persons/edit/:id">
               <AddPersonPage />
             </Route>
             <Route path="/blurb">

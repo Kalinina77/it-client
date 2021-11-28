@@ -1,7 +1,8 @@
-import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
+import { Button } from "@mui/material";
+import { getEmployees } from "api/employees/persons";
+import { IEmployee } from "api/employees/types";
 import { Link } from "react-router-dom";
-import { getEmployees, IEmployee } from "../../api/persons";
 import "./Persons.scss";
 
 const Persons = () => {
@@ -22,7 +23,7 @@ const Persons = () => {
   return (
     <div className="Persons">
       <Button>
-        <Link to="/persons/new">Добавить</Link>
+        <Link to="/persons/edit/new">Добавить</Link>
       </Button>
       <table>
         <thead>
